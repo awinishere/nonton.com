@@ -1,6 +1,5 @@
-package com.awn.tn.features.identity.domain;
+package com.awn.tn.identity.domain;
 
-import com.awn.tn.features.identity.domain.extensions.RoleType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,7 +9,6 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -18,35 +16,22 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "credentials")
-@SQLDelete(sql = "UPDATE credentials SET deleted_at = NOW() WHERE id = ?")
+@Table(name = "rotate_token")
+@SQLDelete(sql = "UPDATE rotate_token SET deleted_at = NOW() WHERE id = ?")
 @SQLRestriction("deleted_at IS NULL")
-public class Credentials {
+public class RotateToken {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "users_id", nullable = false)
-    private Users users;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "credential_id", nullable = false, unique = true)
+    private Credentials credential;
 
-    @Column(name = "email", updatable = true, nullable = false)
-    private String email;
-
-    @Column(name = "password", updatable = true, nullable = false)
-    private String password;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "role", updatable = false, nullable = false)
-    private RoleType role;
-
-    @org.hibernate.annotations.JdbcTypeCode(org.hibernate.type.SqlTypes.JSON)
-    @Column(name = "device", updatable = true, nullable = false)
-    private List<String> device;
-
-    @Column(name = "access_token", columnDefinition = "TEXT" ,updatable = true, nullable = false)
-    private String access_token;
+    @Column(name = "refresh_token", columnDefinition = "TEXT", updatable = true, nullable = false)
+    private String refreshToken;
 
     @Column(name = "created_at", updatable = false, nullable = false)
     private LocalDateTime createdAt;

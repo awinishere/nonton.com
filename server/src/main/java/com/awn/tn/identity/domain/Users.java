@@ -1,5 +1,6 @@
-package com.awn.tn.features.identity.domain;
+package com.awn.tn.identity.domain;
 
+import com.awn.tn.identity.domain.extensions.GenderType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,7 +9,10 @@ import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -16,22 +20,34 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "rotate_token")
-@SQLDelete(sql = "UPDATE rotate_token SET deleted_at = NOW() WHERE id = ?")
+@Table(name = "users")
+@SQLDelete(sql = "UPDATE users SET deleted_at = NOW() WHERE id = ?")
 @SQLRestriction("deleted_at IS NULL")
-public class RotateToken {
+public class Users {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "credential_id", nullable = false, unique = true)
-    private Credentials credential;
+    @Column(name = "avatar", columnDefinition = "TEXT", updatable = true, nullable = true)
+    private String avatar;
 
-    @Column(name = "refresh_token", columnDefinition = "TEXT", updatable = true, nullable = false)
-    private String refreshToken;
+    @Column(name = "name", updatable = true, nullable = false)
+    private String name;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "gender", updatable = true, nullable = false)
+    private GenderType gender;
+
+    @Column(name = "birthday", updatable = true, nullable = false)
+    private LocalDate birthday;
+
+    @Column(name = "status", updatable = true, nullable = false)
+    private Boolean status;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Credentials> credentials = new ArrayList<>();
 
     @Column(name = "created_at", updatable = false, nullable = false)
     private LocalDateTime createdAt;

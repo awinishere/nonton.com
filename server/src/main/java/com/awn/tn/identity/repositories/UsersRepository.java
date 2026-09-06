@@ -1,6 +1,6 @@
-package com.awn.tn.features.identity.repositories;
+package com.awn.tn.identity.repositories;
 
-import com.awn.tn.features.identity.domain.Users;
+import com.awn.tn.identity.domain.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

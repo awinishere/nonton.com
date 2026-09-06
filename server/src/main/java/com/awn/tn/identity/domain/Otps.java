@@ -1,4 +1,4 @@
-package com.awn.tn.features.identity.domain;
+package com.awn.tn.identity.domain;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

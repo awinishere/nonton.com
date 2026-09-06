@@ -1,6 +1,6 @@
-package com.awn.tn.features.identity.domain;
+package com.awn.tn.identity.domain;
 
-import com.awn.tn.features.identity.domain.extensions.GenderType;
+import com.awn.tn.identity.domain.extensions.RoleType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,9 +9,7 @@ import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,34 +18,35 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "users")
-@SQLDelete(sql = "UPDATE users SET deleted_at = NOW() WHERE id = ?")
+@Table(name = "credentials")
+@SQLDelete(sql = "UPDATE credentials SET deleted_at = NOW() WHERE id = ?")
 @SQLRestriction("deleted_at IS NULL")
-public class Users {
-
+public class Credentials {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    @Column(name = "avatar", columnDefinition = "TEXT", updatable = true, nullable = true)
-    private String avatar;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "users_id", nullable = false)
+    private Users users;
 
-    @Column(name = "name", updatable = true, nullable = false)
-    private String name;
+    @Column(name = "email", updatable = true, nullable = false)
+    private String email;
+
+    @Column(name = "password", updatable = true, nullable = false)
+    private String password;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "gender", updatable = true, nullable = false)
-    private GenderType gender;
+    @Column(name = "role", updatable = false, nullable = false)
+    private RoleType role;
 
-    @Column(name = "birthday", updatable = true, nullable = false)
-    private LocalDate birthday;
+    @org.hibernate.annotations.JdbcTypeCode(org.hibernate.type.SqlTypes.JSON)
+    @Column(name = "device", updatable = true, nullable = false)
+    private List<String> device;
 
-    @Column(name = "status", updatable = true, nullable = false)
-    private Boolean status;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Credentials> credentials = new ArrayList<>();
+    @Column(name = "access_token", columnDefinition = "TEXT" ,updatable = true, nullable = false)
+    private String access_token;
 
     @Column(name = "created_at", updatable = false, nullable = false)
     private LocalDateTime createdAt;

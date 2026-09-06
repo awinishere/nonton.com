@@ -1,6 +1,6 @@
-package com.awn.tn.features.identity.repositories;
+package com.awn.tn.identity.repositories;
 
-import com.awn.tn.features.identity.domain.Otps;
+import com.awn.tn.identity.domain.Otps;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
