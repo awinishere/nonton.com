@@ -60,8 +60,8 @@ Credentials credentials = credentialsRepository.findByEmailWithUsers(request.get
 
 ---
 
-### 3. `RotateTokenRepository`
-Manages the JWT *Refresh Token* lifecycle and token rotation processes (`RotateToken`).
+### 3. `SessionsRepository`
+Manages the JWT *Refresh Token* lifecycle and token rotation processes (`Sessions`).
 
 #### Query Methods & Descriptions
 | Query Method | Description / Function |
@@ -121,7 +121,7 @@ if (passwordEncoder.matches(inputOtp, activeOtp.getOtpHash())) {
 ## Automated Features & Important Notes
 
 1. **Automatic Soft Delete Filtering**
-   The `Users`, `Credentials`, and `RotateToken` entities utilize the `@SQLRestriction("deleted_at IS NULL")` annotation. Standard JPA methods such as `findAll()`, `findById()`, or derived query methods **automatically exclude soft-deleted records** from execution results.
+   The `Users`, `Credentials`, and `Sessions` entities utilize the `@SQLRestriction("deleted_at IS NULL")` annotation. Standard JPA methods such as `findAll()`, `findById()`, or derived query methods **automatically exclude soft-deleted records** from execution results.
 
 2. **Preventing N+1 Queries**
    Always prefer custom queries using **`JOIN FETCH`** (e.g., `findByIdWithCredentials` or `findByRefreshTokenWithDetails`) whenever the service layer requires reading related ch

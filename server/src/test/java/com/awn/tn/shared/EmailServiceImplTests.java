@@ -1,7 +1,5 @@
 package com.awn.tn.shared;
 
-import com.awn.tn.shared.email.EmailRequest;
-import com.awn.tn.shared.email.EmailServiceImpl;
 import jakarta.mail.internet.MimeMessage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

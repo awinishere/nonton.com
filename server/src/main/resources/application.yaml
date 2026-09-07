@@ -1,6 +1,21 @@
+server:
+  port: 8081
+
+security:
+  jwt:
+    secret: ${JWT_SECRET:defaultSecretKey}
+    access-token-expiration: ${JWT_ACCESS_TOKEN_EXPIRATION:86400000}
+    refresh-token-expiration: ${JWT_REFRESH_TOKEN_EXPIRATION:604800000}
+
+
 spring:
   application:
     name: server
+
+
+  jpa:
+    hibernate:
+      ddl-auto: update
 
   datasource:
     url: jdbc:postgresql://${DATABASE_HOST:localhost}:${DATABASE_PORT:5432}/${DATABASE_NAME}
@@ -17,8 +32,8 @@ spring:
   mail:
     host: ${MAIL_HOST:smtp.gmail.com}
     port: ${MAIL_PORT:587}
-    username: ${MAIL_USERNAME}
-    password: ${MAIL_PASSWORD}
+    username: ${MAIL_USERNAME:your_email@example.com}
+    password: ${MAIL_PASSWORD:pass1234}
     properties:
       mail:
         smtp:
@@ -31,3 +46,4 @@ spring:
       check-template-location: true
       prefix: classpath:/templates/emails/
       suffix: .tpl
+
